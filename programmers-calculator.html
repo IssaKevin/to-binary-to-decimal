@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Programmers' calculator</title>
+	<style type="text/css">
+
+		*{
+			transition: 0.4s;
+			box-sizing: border-box;
+		}
+
+		body{
+			background-image: url('bg-code.JFIF');
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			font-family: Arial;
+		}
+
+		.container{
+			background: rgba(0,0,0,0.8);
+			border-radius: 10px;
+			border: 1px solid rgb(100,100,100);
+			width: 90%;
+			height: 0 auto;
+			margin: auto;
+			margin-top: 3%;
+			padding: 12px;
+		}
+
+		.container header h1{
+			color: rgb(220,220,220);
+			text-align: center;
+			font-size: 1.3em;
+			padding: 12px;
+			margin-top: 0;
+			border-bottom: 1px dotted #fff;
+
+		}
+
+		.operation{
+			background: rgba(200,200,200,0.2);
+			width: 100%;
+			height: 0 auto;
+			padding: 20px 2px;
+		}
+
+		.operation form{
+			background: none;
+			width: 80%;
+			height: 0 auto;
+			margin: auto;
+		}
+
+		.operation form label{
+			color: rgb(170,170,170);
+			font-size: 1.2em;
+			font-weight: bold;
+			text-align: left;
+			margin-left: 10%;
+		}
+
+		.number, select{
+			background: rgba(240,240,240,0.7);
+			border: 1px solid rgb(200,200,200);
+			border-radius: 5px;
+			width: 80%;
+			height: 40px;
+			margin: auto;
+			margin-top: 2%;
+
+			color: #000;
+			font-weight: bold;
+			font-size: 1em;
+			padding: 12px;
+		}
+
+		.number:focus{
+			background: #fff;
+		}
+
+		.operation form label.to{
+			text-align: left;
+			margin-right: 100%;
+		}
+
+		select{
+			background: rgba(240,240,240,0.7);
+			border: 1px solid rgb(200,200,200);
+			border-radius: 5px;
+			width: 80%;
+			height: 40px;
+			margin: auto;
+			margin-top: 2%;
+
+			color: #000;
+			font-weight: bold;
+			font-size: 1em;
+			padding: 6px;
+		}
+
+		select:focus{
+			background: #fff;
+		}
+
+		.convert-btn{
+			background: rgb(50,100,255);
+			border-radius: 5px;
+			border: 1px solid rgb(100,100,255);
+			width: 80%;
+			height: 40px;
+			margin: auto;
+			margin-top: 5%;
+			cursor: pointer;
+
+			text-align: center;
+			font-weight: bold;
+			color: #fff;
+			font-size: 1.3em;
+		}
+
+		.convert-btn:hover{
+			background: linear-gradient(#3264ff, #042896);
+		}
+
+		.res-footer{
+			background: rgba(255,255,255,1);
+			border-radius: 5px;
+			width: 90%;
+			height: 0;
+			padding: 0px;
+			margin: auto;
+			margin-top: 4%;
+			overflow: hidden;
+		}
+
+		.result h3{
+			color: green;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		.result p{
+			color: rgb(100,100,100);
+		}
+
+		.result h1{
+			color: #0798c3;
+			border-bottom: 1px dotted green;
+			margin-top: 2%;
+			margin-bottom: 0;
+			padding: 6px;
+		}
+
+		.result h1 sub{
+			color: #777;
+			font-size: 0.7em;
+		}
+
+		footer{
+			background: rgba(0,255,0,0.12);
+			width: 100%;
+			height: 40px;
+			margin-top: 3%;
+
+			text-align: center;
+			line-height: 40px;
+			color: #fff;
+		}
+
+
+		/* Responsiveness */
+		@media only screen and (min-width: 600px){
+			.container{
+				width: 50%;
+			}
+		}
+
+		@media only screen and (min-width: 768px){
+			.container{
+				width: 50%;
+			}
+		}
+
+	</style>
+</head>
+<body>
+
+	<div class="container">
+		
+		<header>
+			<h1>Programmers' Calculator</h1>
+		</header>
+
+		<section class="operation">
+			
+			
+			<form>				
+				<label>Enter any number</label>
+				<br />
+				<center>
+				<input type="number" name="number" class="number" placeholder="enter number..." id="number">
+				<br /> <br />
+				<label class="to">To</label>
+				<br />
+				<select id="base">
+					<option value="base2">Binary</option>
+					<option value="base10">Decimal</option>
+				</select>
+				<br />
+				<button type="submit" class="convert-btn">Convert</button>
+				</center>
+			</form>			
+
+		</section>
+
+		<section class="res-footer">
+			<article class="result">
+				<h3>Results</h3>
+
+				<h1>
+					Binary:
+					<span id="output-binary">10010</span><sub>2</sub>
+				</h1>
+
+				<p>
+					You entered:
+					<span id="input-num"> 23 </span>
+				</p>
+			</article>
+		</section>
+
+		<footer>
+			@hello
+		</footer>
+
+	</div>
+
+</body>
+<script type="text/javascript">
+
+	let convertBtn = document.querySelector('.convert-btn');
+	let inNum = document.querySelector('#input-num');
+	let outNum = document.querySelector('#output-binary'); 
+	let resultHolder = document.querySelector('.res-footer');
+	
+	function baseTwo(e, num) {
+		e.preventDefault();
+
+		let input = document.getElementById('number').value;
+		num = input;
+		
+		let numRem;
+
+		let result = [];
+		let lastResult;
+		let lastIndex;
+
+		let remainder = [];
+		let reaminderReverse;
+
+		let binary = [];
+
+		resultHolder.style.height = '140px';
+		resultHolder.style.padding = '12px';
+		inNum.innerHTML = num;
+
+		while(num >= 2){
+			numRem = num;
+			numRem = Math.floor(numRem % 2);
+			remainder.push(numRem);
+
+			num = Math.floor(num / 2);
+			result.push(num);
+		}
+
+		lastIndex = result.length - 1;
+		lastResult = result[lastIndex];
+
+		remainderReverse = remainder.reverse();
+
+		binary.push(lastResult);
+		
+		for(i = 0; i <= (remainderReverse.length)-1; i++){
+			binary.push(remainderReverse[i]);
+		}
+
+		
+		outNum.innerHTML = binary.join("");
+
+	}
+
+	convertBtn.onclick = baseTwo;
+
+</script>
+</html>
